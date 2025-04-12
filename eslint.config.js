@@ -28,6 +28,18 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'indent': ['error', 2, {
+        'SwitchCase': 1,
+        'VariableDeclarator': 'first',
+        'MemberExpression': 1,
+        'FunctionDeclaration': {'parameters': 'first'},
+        'FunctionExpression': {'parameters': 'first'},
+        'CallExpression': {'arguments': 'first'},
+        'ArrayExpression': 1,
+        'ObjectExpression': 1,
+        'ImportDeclaration': 1,
+        'flatTernaryExpressions': false
+      }],
     },
   },
 ]
