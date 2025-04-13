@@ -1,6 +1,7 @@
 import React from "react";
 import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 import { PRIORITY_COLORS } from "../constants/colors";
+import "./Calendar.css"; // Import CSS file for calendar styling
 
 const Calendar = ({
   events,
