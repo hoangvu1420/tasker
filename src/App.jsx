@@ -12,40 +12,60 @@ function App() {
   const [petMood, setPetMood] = useState('happy');
   const [petMessage, setPetMessage] = useState('Hôm nay Gâu Gâu rất vui!');
 
-  // Initialize sample events
+  // Load events from local storage on initial render
   useEffect(() => {
-    const sampleEvents = [
-      {
-        id: 1,
-        text: "Học React",
-        start: "2025-04-14T09:00:00",
-        end: "2025-04-14T11:00:00",
-        priority: "LOW",
-      },
-      {
-        id: 2,
-        text: "Họp nhóm",
-        start: "2025-04-15T14:00:00",
-        end: "2025-04-15T15:30:00",
-        priority: "MEDIUM",
-      },
-      {
-        id: 3,
-        text: "Deadline dự án",
-        start: "2025-04-16T10:00:00",
-        end: "2025-04-16T12:00:00",
-        priority: "HIGH",
-      },
-      {
-        id: 4,
-        text: "Lịch học hàng tuần",
-        start: "2025-04-17T08:30:00",
-        end: "2025-04-17T11:30:00",
-        priority: "FIXED",
-      }
-    ];
-    setEvents(sampleEvents);
+    const savedEvents = localStorage.getItem('tasks');
+    if (savedEvents) {
+      setEvents(JSON.parse(savedEvents));
+      setPetMood('happy');
+      setPetMessage('Gâu Gâu đã tải lịch trình của bạn!');
+    } else {
+      // Initialize sample events for first time users
+      const sampleEvents = [
+        {
+          id: 1,
+          text: "Học React",
+          start: "2025-04-14T09:00:00",
+          end: "2025-04-14T11:00:00",
+          priority: "LOW",
+          description: "Học các khái niệm cơ bản về React"
+        },
+        {
+          id: 2,
+          text: "Họp nhóm",
+          start: "2025-04-15T14:00:00",
+          end: "2025-04-15T15:30:00",
+          priority: "MEDIUM",
+          description: "Thảo luận về tiến độ dự án"
+        },
+        {
+          id: 3,
+          text: "Deadline dự án",
+          start: "2025-04-16T10:00:00",
+          end: "2025-04-16T12:00:00",
+          priority: "HIGH",
+          description: "Nộp bản demo cho khách hàng"
+        },
+        {
+          id: 4,
+          text: "Lịch học hàng tuần",
+          start: "2025-04-17T08:30:00",
+          end: "2025-04-17T11:30:00",
+          priority: "FIXED",
+          description: "Lớp học lập trình nâng cao"
+        }
+      ];
+      setEvents(sampleEvents);
+      localStorage.setItem('tasks', JSON.stringify(sampleEvents));
+    }
   }, []);
+
+  // Update local storage whenever events change
+  useEffect(() => {
+    if (events.length > 0) {
+      localStorage.setItem('tasks', JSON.stringify(events));
+    }
+  }, [events]);
 
   // Add a new task
   const handleAddTask = (newEvent) => {
@@ -69,6 +89,15 @@ function App() {
     setPetMessage('Bạn đang cập nhật kế hoạch, tốt lắm!');
   };
 
+  // Delete task
+  const handleDeleteTask = (id) => {
+    // Update events state
+    setEvents(prevEvents => prevEvents.filter(event => event.id !== id));
+    // Update pet mood
+    setPetMood('sad');
+    setPetMessage('Bạn đã xóa một nhiệm vụ, Gâu Gâu hơi buồn...');
+  };
+
   return (
     <>
       <div className="flex min-h-screen p-8 gap-8 bg-gray-100">
@@ -88,6 +117,7 @@ function App() {
             setStartDate={setStartDate}
             onAddTask={handleAddTask}
             onUpdateTask={handleUpdateTask}
+            onDeleteTask={handleDeleteTask}
           />
         </div>
       </div>

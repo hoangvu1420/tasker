@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 import { PRIORITY_COLORS } from "../constants/colors";
+import TaskModal from "./TaskModal";
 import "./Calendar.css"; // Import CSS file for calendar styling
 
 const Calendar = ({
@@ -8,32 +9,70 @@ const Calendar = ({
   startDate,
   setStartDate,
   onAddTask,
-  onUpdateTask
+  onUpdateTask,
+  onDeleteTask
 }) => {
   const [calendar, setCalendar] = React.useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  // Function to open modal for new task
+  const openNewTaskModal = (args) => {
+    // Create a properly structured timeRange object from the args
+    const timeRange = {
+      start: args.start.toString(),
+      end: args.end.toString()
+    };
+
+    // Create an empty task with the time range for the modal
+    const newEmptyTask = {
+      id: null,
+      text: '',
+      start: timeRange.start,
+      end: timeRange.end,
+      priority: 'MEDIUM',
+      description: ''
+    };
+
+    setSelectedTask(newEmptyTask);
+    setShowModal(true);
+  };
+
+  // Function to open modal for editing task
+  const openEditTaskModal = (task) => {
+    setSelectedTask(task);
+    setShowModal(true);
+  };
+
+  // Function to close modal
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedTask(null);
+  };
+
+  // Function to handle saving task
+  const handleSaveTask = (taskData) => {
+    if (taskData.id) {
+      // Update existing task
+      onUpdateTask(taskData);
+    } else {
+      // Create new task with proper ID
+      const newTask = {
+        ...taskData,
+        id: DayPilot.guid()
+      };
+      onAddTask(newTask);
+    }
+  };
 
   // Calendar configuration
   const config = {
     viewType: "Week",
     durationBarVisible: false,
     timeRangeSelectedHandling: "Enabled",
-    onTimeRangeSelected: async args => {
-      const modal = await DayPilot.Modal.prompt("Tạo nhiệm vụ mới:", "Nhiệm vụ");
+    onTimeRangeSelected: args => {
       calendar?.clearSelection();
-      if (!modal.result) { return; }
-
-      // Create a new event with medium priority by default
-      const newEvent = {
-        start: args.start,
-        end: args.end,
-        id: DayPilot.guid(),
-        text: modal.result,
-        backColor: PRIORITY_COLORS.MEDIUM.background,
-        fontColor: PRIORITY_COLORS.MEDIUM.text,
-        priority: "MEDIUM"
-      };
-
-      onAddTask(newEvent);
+      openNewTaskModal(args);
     },
     // Customize event rendering to show priority indicators with improved styling
     onBeforeEventRender: args => {
@@ -50,13 +89,9 @@ const Calendar = ({
       // Add rounded corners
       args.data.cssClass = "rounded-md shadow-md transition-transform transform hover:scale-105 opacity-80";
     },
-    onEventClick: async args => {
+    onEventClick: args => {
       const event = args.e.data;
-      const text = await DayPilot.Modal.prompt("Chỉnh sửa nhiệm vụ:", event.text);
-      if (text) {
-        const updatedEvent = {...event, text};
-        onUpdateTask(updatedEvent);
-      }
+      openEditTaskModal(event);
     }
   };
 
@@ -82,6 +117,15 @@ const Calendar = ({
           controlRef={setCalendar}
         />
       </div>
+
+      {/* Custom Task Modal */}
+      <TaskModal
+        isOpen={showModal}
+        onClose={closeModal}
+        task={selectedTask}
+        onSave={handleSaveTask}
+        onDelete={onDeleteTask}
+      />
     </div>
   );
 };
