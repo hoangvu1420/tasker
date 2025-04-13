@@ -30,12 +30,12 @@ const Pet = ({ name, message, mood = 'happy' }) => {
         className="w-64 flex flex-col items-center rounded-lg shadow p-4"
         style={{ backgroundColor: '#FDF1DD' }}
       >
-        <h2 className="text-xl font-semibold mb-2">{name}</h2>
         <img
           src={getPetImage()}
           alt={`${name} is ${mood}`}
           className="w-40 h-40 object-cover mb-4"
         />
+        <h2 className="text-xl font-semibold mb-2">{name}</h2>
         <p className="text-gray-500 text-center">Trạng thái: {mood === 'happy' ? 'Vui vẻ 😄' : mood === 'sad' ? 'Buồn 😢' : mood === 'angry' ? 'Giận 😠' : mood === 'sleeping' ? 'Ngủ 😴' : 'Bình thường 🙂'}</p>
       </div>
     </div>
