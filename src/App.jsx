@@ -3,6 +3,7 @@ import './App.css'
 import { DayPilot } from "@daypilot/daypilot-lite-react";
 import Calendar from "./components/Calendar";
 import Pet from "./components/Pet";
+import TaskNotificationCenter from './components/TaskNotification';
 
 function App() {
   const [startDate, setStartDate] = useState(DayPilot.Date.today());
@@ -110,7 +111,11 @@ function App() {
 
         {/* Bên phải: DatePicker + Calendar */}
         <div className="flex-1">
-          <h1 className="text-3xl font-bold underline mb-4">Quản lý thời gian</h1>
+          <div className='flex flex-row justify-between items-center mb-4'>
+            <h1 className="text-3xl font-bold underline mb-4">Quản lý thời gian</h1>
+            <TaskNotificationCenter tasks={events} />
+            </div>
+          
           <Calendar
             events={events}
             startDate={startDate}
