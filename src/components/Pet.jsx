@@ -7,7 +7,7 @@ const Pet = ({ name, message, mood = 'happy' }) => {
       case 'happy':
         return '/pet_happy.gif';
       case 'sad':
-        return '/gaugau_sad.png';
+        return '/pet_sad.gif';
       default:
         // Default to happy image for other moods until we have specific images
         return '/pet_normal.png';
@@ -16,7 +16,6 @@ const Pet = ({ name, message, mood = 'happy' }) => {
 
   return (
     <div className="flex flex-col items-center">
-      {/* Speech bubble with max width and word wrapping */}
 
 
       {/* Pet image and info */}
@@ -24,13 +23,16 @@ const Pet = ({ name, message, mood = 'happy' }) => {
         className="w-64 flex flex-col items-center rounded-lg shadow p-4 flex-grow w-[350px]"
       >
         <div className='flex-grow'></div>
-              <div className="relative mb-4 w-full ">
-        <div className="bg-white p-3 rounded-lg shadow-md relative">
-          <p className="text-gray-700 text-center break-words">{message}</p>
-          {/* Triangle pointer for the speech bubble */}
-          <div className="absolute h-4 w-4 bg-white rotate-45 -bottom-2 left-1/2 -translate-x-1/2"></div>
+
+        {/* Speech bubble with max width and word wrapping */}
+        <div className="relative mb-4 w-full ">
+          <div className="bg-white p-3 rounded-lg shadow-md relative">
+            <p className="text-gray-700 text-center break-words">{message}</p>
+            {/* Triangle pointer for the speech bubble */}
+            <div className="absolute h-4 w-4 bg-white rotate-45 -bottom-2 left-1/2 -translate-x-1/2"></div>
+          </div>
         </div>
-      </div>
+
         <img
           src={getPetImage()}
           alt={`${name} is ${mood}`}
