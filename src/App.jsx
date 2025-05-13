@@ -11,7 +11,7 @@ function App() {
 
   // Pet state
   const [petMood, setPetMood] = useState('happy');
-  const [petMessage, setPetMessage] = useState('Hôm nay Gâu Gâu rất vui!');
+  const [petMessage, setPetMessage] = useState('Hôm nay Meo rất vui!');
 
   // Load events from local storage on initial render
   useEffect(() => {
@@ -19,7 +19,7 @@ function App() {
     if (savedEvents) {
       setEvents(JSON.parse(savedEvents));
       setPetMood('happy');
-      setPetMessage('Gâu Gâu đã tải lịch trình của bạn!');
+      setPetMessage('Meo đã tải lịch trình của bạn!');
     } else {
       // Initialize sample events for first time users
       const sampleEvents = [
@@ -96,7 +96,7 @@ function App() {
     setEvents(prevEvents => prevEvents.filter(event => event.id !== id));
     // Update pet mood
     setPetMood('sad');
-    setPetMessage('Bạn đã xóa một nhiệm vụ, Gâu Gâu hơi buồn...');
+    setPetMessage('Bạn đã xóa một nhiệm vụ, Meo hơi buồn...');
   };
 
   return (
@@ -104,17 +104,20 @@ function App() {
       <div className="flex min-h-screen p-8 gap-8 bg-gray-100">
         {/* Bên trái: Thú cưng */}
         <Pet
-          name="Gâu Gâu"
+          name="Mèo béo"
           message={petMessage}
           mood={petMood}
         />
 
         {/* Bên phải: DatePicker + Calendar */}
         <div className="flex-1">
-          <div className='flex flex-row justify-between items-center mb-4'>
-            <h1 className="text-3xl font-bold underline mb-4">Quản lý thời gian</h1>
-            <TaskNotificationCenter tasks={events} />
+          <div className="flex flex-row items-center mb-4">
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold underline text-center">Quản lý thời gian</h1>
             </div>
+            <TaskNotificationCenter tasks={events} />
+          </div>
+
           
           <Calendar
             events={events}

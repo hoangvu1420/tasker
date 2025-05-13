@@ -98,7 +98,7 @@ const Calendar = ({
   return (
     <div className="flex gap-4">
       {/* Date Picker (Navigator) */}
-      <div className="w-56">
+      {/* <div className="w-56">
         <DayPilotNavigator
           selectMode="Week"
           showMonths={2}
@@ -106,7 +106,7 @@ const Calendar = ({
           selectionDay={startDate}
           onTimeRangeSelected={(args) => setStartDate(args.day)}
         />
-      </div>
+      </div> */}
 
       {/* Calendar */}
       <div className="flex-grow">
