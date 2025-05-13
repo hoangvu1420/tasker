@@ -8,6 +8,7 @@ import TaskNotificationCenter from './components/TaskNotification';
 function App() {
   const [startDate, setStartDate] = useState(DayPilot.Date.today());
   const [events, setEvents] = useState([]);
+  const [viewType, setViewType] = useState('Week'); // Add state for calendar view type
 
   // Pet state
   const [petMood, setPetMood] = useState('happy');
@@ -111,8 +112,7 @@ function App() {
 
         {/* Bên phải: DatePicker + Calendar */}
         <div className="flex-1">
-          <div className="flex flex-row items-center justify-between mb-4">
-            <div className="w-1/4">
+          <div className="flex flex-row items-center justify-between mb-4">            <div className="w-1/4">
               <input
                 type="date"
                 value={startDate.toString().slice(0, 10)}
@@ -120,18 +120,25 @@ function App() {
                 className="border border-gray-300 rounded-lg p-2"
               />
             </div>
-            <div className="flex-1 text-center">
+            <div className="flex-1 text-center flex justify-center items-center gap-4">
               <h1 className="text-3xl font-bold underline">Quản lý thời gian</h1>
+              <select
+                value={viewType}
+                onChange={(e) => setViewType(e.target.value)}
+                className="border border-gray-300 rounded-lg p-2 bg-white"
+              >
+                <option value="Day">Ngày</option>
+                <option value="Week">Tuần</option>
+              </select>
             </div>
             <div className="w-1/4 flex justify-end">
               <TaskNotificationCenter tasks={events} />
             </div>
-          </div>
-
-          <Calendar
+          </div>          <Calendar
             events={events}
             startDate={startDate}
             setStartDate={setStartDate}
+            viewType={viewType}
             onAddTask={handleAddTask}
             onUpdateTask={handleUpdateTask}
             onDeleteTask={handleDeleteTask}
