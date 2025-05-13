@@ -8,6 +8,7 @@ const Calendar = ({
   events,
   startDate,
   // setStartDate,
+  viewType,
   onAddTask,
   onUpdateTask,
   onDeleteTask
@@ -15,6 +16,13 @@ const Calendar = ({
   const [calendar, setCalendar] = React.useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  
+  // Update calendar view type when it changes
+  React.useEffect(() => {
+    if (calendar) {
+      calendar.update({viewType: viewType});
+    }
+  }, [viewType, calendar]);
 
   // Function to open modal for new task
   const openNewTaskModal = (args) => {
@@ -64,10 +72,9 @@ const Calendar = ({
       onAddTask(newTask);
     }
   };
-
   // Calendar configuration
   const config = {
-    viewType: "Week",
+    viewType: viewType || "Week", // Use the provided viewType or default to Week
     durationBarVisible: false,
     timeRangeSelectedHandling: "Enabled",
     onTimeRangeSelected: args => {
