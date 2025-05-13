@@ -20,7 +20,7 @@ const Pet = ({ name, message, mood = 'happy' }) => {
 
       {/* Pet image and info */}
       <div
-        className="w-64 flex flex-col items-center rounded-lg shadow p-4 flex-grow w-[350px]"
+        className="w-64 flex flex-col items-center rounded-lg shadow p-4 flex-grow w-[350px]  bg-white"
       >
         <div
           className="w-full h-[450px] border-t border-gray-300 my-4 bg-[url('/pet_name_sign.png')] bg-no-repeat bg-center bg-cover flex justify-center items-center"
@@ -30,7 +30,7 @@ const Pet = ({ name, message, mood = 'happy' }) => {
         </div>
 
         <div className='flex-grow'></div>
-        <div className="flex flex-col items-center py-16 border-t border-b border-gray-300 w-full max-w-[500px] mx-auto bg-white">
+        <div className="flex flex-col items-center py-16 border-t border-b border-gray-300 w-full max-w-[500px] mx-auto">
           {/* Speech bubble with max width and word wrapping */}
           <div className="relative mb-4 w-full max-w-[250px]">
             <div className="bg-white p-3 rounded-lg shadow-md relative">
@@ -52,7 +52,7 @@ const Pet = ({ name, message, mood = 'happy' }) => {
 
         <div className='flex-grow'></div>
         
-        <div className="w-full h-[450px] border-t border-gray-300 my-4 bg-white"></div>
+        <div className="w-full h-[450px] my-4"></div>
       </div>
     </div>
   );
