@@ -113,12 +113,22 @@ function App() {
         <div className="flex-1">
           <div className="flex flex-row items-center mb-4">
             <div className="flex-1">
+              <div className="flex justify-center mt-4">
+                <input
+                  type="date"
+                  value={startDate.toString().slice(0, 10)}
+                  onChange={(e) => setStartDate(new DayPilot.Date(e.target.value))}
+                  className="border border-gray-300 rounded-lg p-2"
+                />
+              </div>
+            </div>
+            <div className="flex-1">
               <h1 className="text-3xl font-bold underline text-center">Quản lý thời gian</h1>
             </div>
             <TaskNotificationCenter tasks={events} />
           </div>
 
-          
+
           <Calendar
             events={events}
             startDate={startDate}
