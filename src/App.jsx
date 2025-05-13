@@ -8,6 +8,7 @@ import TaskNotificationCenter from './components/TaskNotification';
 function App() {
   const [startDate, setStartDate] = useState(DayPilot.Date.today());
   const [events, setEvents] = useState([]);
+  const [viewType, setViewType] = useState("Week");
 
   // Pet state
   const [petMood, setPetMood] = useState('happy');
@@ -122,20 +123,35 @@ function App() {
                 />
               </div>
             </div>
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold underline text-center">Quản lý thời gian</h1>
+            <div className="flex-1">              <div className="flex items-center justify-center gap-4">
+                <h1 className="text-3xl font-bold underline">Quản lý thời gian</h1>
+                <div className="relative">
+                  <select
+                    value={viewType}
+                    onChange={(e) => setViewType(e.target.value)}
+                    className="appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-8 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="Day">Ngày</option>
+                    <option value="Week">Tuần</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
             <TaskNotificationCenter tasks={events} />
-          </div>
-
-
-          <Calendar
+          </div>          <Calendar
             events={events}
             startDate={startDate}
             setStartDate={setStartDate}
             onAddTask={handleAddTask}
             onUpdateTask={handleUpdateTask}
             onDeleteTask={handleDeleteTask}
+            viewType={viewType}
+            setViewType={setViewType}
           />
         </div>
       </div>

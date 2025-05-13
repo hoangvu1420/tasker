@@ -10,7 +10,9 @@ const Calendar = ({
   setStartDate,
   onAddTask,
   onUpdateTask,
-  onDeleteTask
+  onDeleteTask,
+  viewType,
+  setViewType
 }) => {
   const [calendar, setCalendar] = React.useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -67,7 +69,7 @@ const Calendar = ({
 
   // Calendar configuration
   const config = {
-    viewType: "Week",
+    viewType: viewType,
     durationBarVisible: false,
     timeRangeSelectedHandling: "Enabled",
     onTimeRangeSelected: args => {
