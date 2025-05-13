@@ -35,9 +35,14 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    const isTimeField = name === "start" || name === "end";
+    const fixedValue =
+      isTimeField && value && value.length === 16 ? value + ":00" : value;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: fixedValue,
     }));
   };
 
