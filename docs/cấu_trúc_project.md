@@ -8,7 +8,8 @@ src/
 │   ├── Calendar.jsx      # Component hiển thị lịch và quản lý tasks
 │   ├── Pet.jsx           # Component hiển thị thú cưng và trạng thái
 │   ├── TaskModal.jsx     # Component modal tùy chỉnh để thêm/sửa nhiệm vụ
-│   └── ConfirmDialog.jsx # Component modal xác nhận khi xóa nhiệm vụ
+│   ├── ConfirmDialog.jsx # Component modal xác nhận khi xóa nhiệm vụ
+│   └── TaskNotification.jsx # Component hiển thị thông báo task
 ├── constants/            # Chứa các hằng số được dùng xuyên suốt ứng dụng
 │   └── colors.js         # Định nghĩa màu sắc cho các mức độ ưu tiên
 ├── assets/               # Tài nguyên tĩnh (hình ảnh, biểu tượng)
@@ -96,6 +97,22 @@ src/
   - Thay thế hộp thoại xác nhận mặc định của trình duyệt
   - Thiết kế phù hợp với phong cách UI của ứng dụng
 
+### TaskNotification.jsx - Component Thông Báo Nhiệm Vụ
+
+- **Props nhận vào**:
+  - `tasks`: Danh sách các nhiệm vụ để hiển thị thông báo.
+
+- **State cục bộ**:
+  - `notifiedEndIds`: Mảng chứa ID của các nhiệm vụ đã thông báo kết thúc.
+  - `notifiedStartIds`: Mảng chứa ID của các nhiệm vụ đã thông báo bắt đầu.
+  - `isOpen`: Trạng thái hiển thị panel thông báo.
+
+- **Chức năng**:
+  - Hiển thị thông báo toast khi nhiệm vụ sắp bắt đầu hoặc kết thúc.
+  - Hiển thị danh sách các nhiệm vụ trong ngày khi click vào biểu tượng thông báo.
+  - Sử dụng `react-toastify` để hiển thị thông báo.
+  - Sử dụng `date-fns` để xử lý thời gian.
+
 ## Các Giá Trị Constants
 
 ### colors.js
@@ -132,6 +149,10 @@ src/
 4. Khi state của App thay đổi:
    - `Pet` component nhận props mới và render lại với thông điệp và tâm trạng mới
    - `Calendar` component nhận events mới và render lại lịch với các nhiệm vụ cập nhật
+
+5. Khi đến thời gian của task:
+    - `TaskNotification` component sẽ hiển thị thông báo (notification) cho người dùng biết task đó sắp bắt đầu hoặc kết thúc.
+    - Nếu người dùng click vào biểu tượng thông báo, một danh sách các task trong ngày sẽ hiện ra.
 
 ## Tương Tác Người Dùng
 

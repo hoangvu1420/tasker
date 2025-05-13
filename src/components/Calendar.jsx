@@ -7,7 +7,7 @@ import "./Calendar.css"; // Import CSS file for calendar styling
 const Calendar = ({
   events,
   startDate,
-  setStartDate,
+  // setStartDate,
   onAddTask,
   onUpdateTask,
   onDeleteTask

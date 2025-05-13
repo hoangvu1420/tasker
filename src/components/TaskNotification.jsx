@@ -25,7 +25,7 @@ const TaskNotificationCenter = ({ tasks = [] }) => {
       };
 
       tasks.forEach((task) => {
-        const start = parseISO(task.start);
+        // const start = parseISO(task.start);
         const end = parseISO(task.end);
 
         const isStartingNow =
@@ -39,8 +39,8 @@ const TaskNotificationCenter = ({ tasks = [] }) => {
               task.priority === "HIGH"
                 ? "info"
                 : task.priority === "MEDIUM"
-                ? "default"
-                : "success",
+                  ? "default"
+                  : "success",
           });
           setNotifiedStartIds((prev) => [...prev, task.id]);
         }
@@ -56,10 +56,10 @@ const TaskNotificationCenter = ({ tasks = [] }) => {
               task.priority === "HIGH"
                 ? "error"
                 : task.priority === "MEDIUM"
-                ? "warning"
-                : task.priority === "FIXED"
-                ? "info"
-                : "default",
+                  ? "warning"
+                  : task.priority === "FIXED"
+                    ? "info"
+                    : "default",
           });
           setNotifiedEndIds((prev) => [...prev, task.id]);
         }
@@ -70,6 +70,7 @@ const TaskNotificationCenter = ({ tasks = [] }) => {
   }, [tasks, notifiedEndIds, notifiedStartIds]);
 
   const todayTasks = tasks.filter((task) =>
+    task.start && typeof task.start === 'string' &&
     isSameDay(parseISO(task.start), new Date())
   );
 
@@ -110,10 +111,10 @@ const TaskNotificationCenter = ({ tasks = [] }) => {
                       task.priority === "HIGH"
                         ? "text-red-500"
                         : task.priority === "MEDIUM"
-                        ? "text-yellow-500"
-                        : task.priority === "LOW"
-                        ? "text-green-500"
-                        : "text-blue-500"
+                          ? "text-yellow-500"
+                          : task.priority === "LOW"
+                            ? "text-green-500"
+                            : "text-blue-500"
                     }`}
                   >
                     Ưu tiên: {task.priority}

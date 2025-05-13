@@ -111,23 +111,22 @@ function App() {
 
         {/* Bên phải: DatePicker + Calendar */}
         <div className="flex-1">
-          <div className="flex flex-row items-center mb-4">
-            <div className="flex-1">
-              <div className="flex justify-center mt-4">
-                <input
-                  type="date"
-                  value={startDate.toString().slice(0, 10)}
-                  onChange={(e) => setStartDate(new DayPilot.Date(e.target.value))}
-                  className="border border-gray-300 rounded-lg p-2"
-                />
-              </div>
+          <div className="flex flex-row items-center justify-between mb-4">
+            <div className="w-1/4">
+              <input
+                type="date"
+                value={startDate.toString().slice(0, 10)}
+                onChange={(e) => setStartDate(new DayPilot.Date(e.target.value))}
+                className="border border-gray-300 rounded-lg p-2"
+              />
             </div>
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold underline text-center">Quản lý thời gian</h1>
+            <div className="flex-1 text-center">
+              <h1 className="text-3xl font-bold underline">Quản lý thời gian</h1>
             </div>
-            <TaskNotificationCenter tasks={events} />
+            <div className="w-1/4 flex justify-end">
+              <TaskNotificationCenter tasks={events} />
+            </div>
           </div>
-
 
           <Calendar
             events={events}

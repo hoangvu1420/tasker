@@ -7,7 +7,7 @@
 
 /* Target the scroll container to take full height */
 .calendar_default_main > div:nth-child(2) {
-  height: 94% !important; /* Adjusted height to prevent vertical scrollbar */
+  height: 94.6% !important; /* Adjusted height to prevent vertical scrollbar */
   min-height: 350px; /* Minimum height to ensure visibility */
   overflow: auto;
 }
