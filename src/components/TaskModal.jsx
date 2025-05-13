@@ -55,6 +55,10 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
       toast.error("Thời gian kết thúc không hợp lệ");
       return false;
     }
+    if (new Date(formData.end) <= new Date(formData.start)) {
+      toast.error("Thời gian kết thúc phải sau thời gian bắt đầu");
+      return false;
+    }
     return true;
   };
 
@@ -150,11 +154,13 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
                     Thời gian bắt đầu
                   </label>
                   <input
-                    type="text"
+                    type="datetime-local"
                     id="start"
-                    value={formatDateTime(formData.start)}
+                    name="start"
+                    value={formData.start ? formData.start.slice(0, 16) : ""}
+                    onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100"
-                    disabled
+                    // disabled
                   />
                 </div>
                 <div>
@@ -165,11 +171,13 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
                     Thời gian kết thúc
                   </label>
                   <input
-                    type="text"
+                    type="datetime-local"
                     id="end"
-                    value={formatDateTime(formData.end)}
+                    name="end"
+                    value={formData.end ? formData.end.slice(0, 16) : ""}
+                    onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100"
-                    disabled
+                    // disabled
                   />
                 </div>
               </div>
