@@ -20,7 +20,7 @@ function App() {
     const savedEvents = localStorage.getItem("tasks");
     if (savedEvents) {
       setEvents(JSON.parse(savedEvents));
-      setPetMood("happy");
+      setPetMood("normal");
       setPetMessage("Meo đã tải lịch trình của bạn!");
     } else {
       // Initialize sample events for first time users
