@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 import { PRIORITY_COLORS } from "../constants/colors";
 import TaskModal from "./TaskModal";
@@ -16,13 +16,71 @@ const Calendar = ({
   const [calendar, setCalendar] = React.useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-  
+
   // Update calendar view type when it changes
   React.useEffect(() => {
     if (calendar) {
-      calendar.update({viewType: viewType});
+      calendar.update({ viewType: viewType });
     }
   }, [viewType, calendar]);
+
+  // Highlight current date in calendar header
+  useEffect(() => {
+    if (calendar) {
+      const highlightCurrentDate = () => {
+        // Wait for the calendar to fully render
+        setTimeout(() => {
+          // Get the main calendar element
+          const calendarMain = document.querySelector('.calendar_default_main');
+          if (!calendarMain) return;
+
+          // Get today's date in format MM/DD/YYYY
+          const today = new Date();
+          const formattedToday = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
+
+          // Find the date cells in the header
+          const dateHeaderCells = calendarMain.querySelector('div:nth-child(1) > table > tbody > tr > td:nth-child(2) > table > tbody > tr > td');
+
+          if (dateHeaderCells) {
+            // Loop through all header cells
+            const headerCells = Array.from(dateHeaderCells.parentElement.children);
+            headerCells.forEach(cell => {
+              // Find the inner div with the date text
+              const dateDiv = cell.querySelector('.calendar_default_colheader_inner');
+              if (dateDiv) {
+                // Remove current-date class from all cells first
+                dateDiv.classList.remove('calendar-current-date');
+
+                // Apply class to current date
+                if (dateDiv.textContent === formattedToday) {
+                  dateDiv.classList.add('calendar-current-date');
+                }
+              }
+            });
+          }
+        }, 100); // Small delay to ensure DOM is ready
+      };
+
+      // Call the highlight function
+      highlightCurrentDate();
+
+      // Set up observer to handle dynamic updates to the calendar
+      const observer = new MutationObserver(highlightCurrentDate);
+      const calendarElement = document.querySelector('.calendar_default_main');
+
+      if (calendarElement) {
+        observer.observe(calendarElement, {
+          childList: true,
+          subtree: true
+        });
+      }
+
+      // Clean up observer on unmount
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [calendar, startDate, viewType]);
 
   // Function to open modal for new task
   const openNewTaskModal = (args) => {
@@ -104,17 +162,6 @@ const Calendar = ({
 
   return (
     <div className="flex gap-4">
-      {/* Date Picker (Navigator) */}
-      {/* <div className="w-56">
-        <DayPilotNavigator
-          selectMode="Week"
-          showMonths={2}
-          skipMonths={2}
-          selectionDay={startDate}
-          onTimeRangeSelected={(args) => setStartDate(args.day)}
-        />
-      </div> */}
-
       {/* Calendar */}
       <div className="flex-grow">
         <DayPilotCalendar

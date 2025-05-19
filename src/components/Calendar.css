@@ -16,3 +16,13 @@
 .flex-grow {
   height: calc(100vh - 120px); /* Adjusted to account for padding */
 }
+
+/* Styles for highlighted current date */
+.calendar-current-date {
+  background-color: #4299e1 !important;
+  color: white !important;
+  font-weight: bold !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.2s ease-in-out !important;
+}
