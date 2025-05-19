@@ -32,6 +32,7 @@ function App() {
           end: "2025-04-14T11:00:00",
           priority: "LOW",
           description: "Học các khái niệm cơ bản về React",
+          status: "todo"
         },
         {
           id: 2,
@@ -40,6 +41,7 @@ function App() {
           end: "2025-04-15T15:30:00",
           priority: "MEDIUM",
           description: "Thảo luận về tiến độ dự án",
+          status: "todo"
         },
         {
           id: 3,
@@ -48,6 +50,7 @@ function App() {
           end: "2025-04-16T12:00:00",
           priority: "HIGH",
           description: "Nộp bản demo cho khách hàng",
+          status: "done"
         },
         {
           id: 4,
@@ -56,6 +59,7 @@ function App() {
           end: "2025-04-17T11:30:00",
           priority: "FIXED",
           description: "Lớp học lập trình nâng cao",
+          status: "todo"
         },
       ];
       setEvents(sampleEvents);
@@ -101,11 +105,37 @@ function App() {
     setPetMessage("Bạn đã xóa một nhiệm vụ, Meo hơi buồn...");
   };
 
+  // Handle task status change
+  const handleTaskStatusChange = (taskId, isCompleted) => {
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.id === taskId
+          ? { ...event, status: isCompleted ? "done" : "todo" }
+          : event
+      )
+    );
+
+    // Update pet mood based on task completion
+    if (isCompleted) {
+      setPetMood("happy");
+      setPetMessage("Thật tuyệt vời! Bạn đã hoàn thành một nhiệm vụ!");
+    } else {
+      setPetMood("normal");
+      setPetMessage("Bạn đã hủy hoàn thành nhiệm vụ. Cố gắng lên nhé!");
+    }
+  };
+
   return (
     <>
       <div className="flex min-h-screen p-8 gap-8 bg-gray-100">
         {/* Bên trái: Thú cưng */}
-        <Pet name="Mèo béo" message={petMessage} mood={petMood} />
+        <Pet
+          name="Mèo béo"
+          message={petMessage}
+          mood={petMood}
+          tasks={events}
+          onTaskStatusChange={handleTaskStatusChange}
+        />
 
         {/* Bên phải: DatePicker + Calendar */}
         <div className="flex-1">
