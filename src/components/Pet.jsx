@@ -1,12 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 
-const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) => {
+const Pet = ({
+  name,
+  message,
+  mood = "happy",
+  tasks = [],
+  onTaskStatusChange,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [score, setScore] = useState(0);
-  const statuses = ['Đang ăn', 'Đang ngủ', 'Đang chơi', 'Đang học', 'Đang nghỉ'];
+  const statuses = [
+    "Đang ăn",
+    "Đang ngủ",
+    "Đang chơi",
+    "Đang học",
+    "Đang nghỉ",
+  ];
 
   // Mảng boolean để lưu trạng thái checkbox cho từng công việc
-  const [checkedStatuses, setCheckedStatuses] = useState(Array(statuses.length).fill(false));
+  const [checkedStatuses, setCheckedStatuses] = useState(
+    Array(statuses.length).fill(false)
+  );
 
   // Thêm state để lưu trạng thái của các task
   const [checkedTasks, setCheckedTasks] = useState({});
@@ -25,13 +39,15 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
   useEffect(() => {
     if (tasks.length > 0) {
       const initialCheckedState = {};
-      tasks.forEach(task => {
-        initialCheckedState[task.id] = task.status === 'done';
+      tasks.forEach((task) => {
+        initialCheckedState[task.id] = task.status === "done";
       });
       setCheckedTasks(initialCheckedState);
 
       // Cập nhật điểm dựa trên số task đã hoàn thành
-      const completedTasks = tasks.filter(task => task.status === 'done').length;
+      const completedTasks = tasks.filter(
+        (task) => task.status === "done"
+      ).length;
       const checkedStatusCount = checkedStatuses.filter(Boolean).length;
       setScore(completedTasks + checkedStatusCount);
     }
@@ -39,19 +55,19 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
 
   // Nếu currentMood khác 'normal', sau 5s sẽ reset về 'normal'
   useEffect(() => {
-    if (currentMood !== 'normal') {
+    if (currentMood !== "normal") {
       const timer = setTimeout(() => {
-        setCurrentMood('normal');
+        setCurrentMood("normal");
       }, 15000);
 
       return () => clearTimeout(timer);
     }
   }, [currentMood]);
 
-  const moodsByIndex = ['happy', 'sad', 'angry', 'sleeping', 'normal'];
+  const moodsByIndex = ["happy", "sad", "angry", "sleeping", "normal"];
 
   const handleCheckboxChange = (index) => {
-    setCheckedStatuses(prev => {
+    setCheckedStatuses((prev) => {
       const newChecked = [...prev];
       newChecked[index] = !newChecked[index];
 
@@ -70,7 +86,7 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
       if (checkedIndex !== -1) {
         setCurrentMood(moodsByIndex[checkedIndex]);
       } else {
-        setCurrentMood('normal');
+        setCurrentMood("normal");
       }
 
       return newChecked;
@@ -80,10 +96,10 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
   // Hàm xử lý khi người dùng đánh dấu một task
   const handleTaskCheckboxChange = (taskId) => {
     // Cập nhật state nội bộ
-    setCheckedTasks(prev => {
+    setCheckedTasks((prev) => {
       const newCheckedTasks = {
         ...prev,
-        [taskId]: !prev[taskId]
+        [taskId]: !prev[taskId],
       };
 
       // Cập nhật điểm từ tasks
@@ -96,10 +112,16 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
       setScore(statusScore + taskScore);
 
       // Cập nhật mood dựa trên trạng thái mới
-      if (Object.values(newCheckedTasks).filter(Boolean).length > Object.values(prev).filter(Boolean).length) {
-        setCurrentMood('happy');
-      } else if (Object.values(newCheckedTasks).filter(Boolean).length < Object.values(prev).filter(Boolean).length) {
-        setCurrentMood('sad');
+      if (
+        Object.values(newCheckedTasks).filter(Boolean).length >
+        Object.values(prev).filter(Boolean).length
+      ) {
+        setCurrentMood("happy");
+      } else if (
+        Object.values(newCheckedTasks).filter(Boolean).length <
+        Object.values(prev).filter(Boolean).length
+      ) {
+        setCurrentMood("sad");
       }
 
       return newCheckedTasks;
@@ -113,36 +135,39 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
 
   const getPetImage = () => {
     switch (currentMood) {
-      case 'happy':
-        return '/pet_happy.gif';
-      case 'sad':
-        return '/pet_sad.gif';
-      case 'angry':
-        return '/pet_angry.gif';  // ví dụ thêm
-      case 'sleeping':
-        return '/pet_sleeping.gif'; // ví dụ thêm
-      case 'normal':
+      case "happy":
+        return "/pet_happy.gif";
+      case "sad":
+        return "/pet_sad.gif";
+      case "angry":
+        return "/pet_angry.gif"; // ví dụ thêm
+      case "sleeping":
+        return "/pet_sleeping.gif"; // ví dụ thêm
+      case "normal":
       default:
-        return '/pet_normal.png';
+        return "/pet_normal.png";
     }
   };
 
   // Xử lý click ngoài vùng chứa để đóng collapse
   useEffect(() => {
     function handleClickOutside(event) {
-      if (containerRef.current && !containerRef.current.contains(event.target)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
         setIsOpen(false);
       }
     }
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
 
@@ -150,7 +175,10 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
   const getDateFromTimeString = (timeString) => {
     try {
       const date = new Date(timeString);
-      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}-${String(date.getDate()).padStart(2, "0")}`;
     } catch (error) {
       console.error("Invalid date format:", timeString);
       return ""; // Trả về chuỗi rỗng nếu không parse được
@@ -159,20 +187,24 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
 
   // Lấy ngày hiện tại và ngày mai dưới dạng chuỗi 'YYYY-MM-DD'
   const today = new Date();
-  const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const formattedToday = `${today.getFullYear()}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
-  const formattedTomorrow = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
+  const formattedTomorrow = `${tomorrow.getFullYear()}-${String(
+    tomorrow.getMonth() + 1
+  ).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}`;
 
   // Lọc các task dựa trên ngày đã chuẩn hóa
-  const todayTasks = tasks.filter(task => {
+  const todayTasks = tasks.filter((task) => {
     if (!task.start) return false;
     const taskDate = getDateFromTimeString(task.start);
     return taskDate === formattedToday;
   });
 
-  const upcomingTasks = tasks.filter(task => {
+  const upcomingTasks = tasks.filter((task) => {
     if (!task.start) return false;
     const taskDate = getDateFromTimeString(task.start);
     return taskDate === formattedTomorrow;
@@ -181,10 +213,10 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
   return (
     <div className="flex flex-col items-center">
       <div className="w-64 flex flex-col items-center rounded-lg shadow p-4 flex-grow w-[350px] bg-white relative">
-        <div
-          className="w-full h-[450px] border-t border-gray-300 my-4 bg-[url('/pet_name_sign.png')] bg-no-repeat bg-center bg-cover flex justify-center items-center"
-        >
-          <span className="text-gray-700 text-2xl font-bold">Thú cưng của tôi</span>
+        <div className="w-full h-[450px] border-t border-gray-300 my-4 bg-[url('/pet_name_sign.png')] bg-no-repeat bg-center bg-cover flex justify-center items-center">
+          <span className="text-gray-700 text-2xl font-bold">
+            Thú cưng của tôi
+          </span>
         </div>
 
         <div className="flex-grow"></div>
@@ -209,13 +241,16 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
           />
           <h2 className="text-xl font-semibold mb-2">{name}</h2>
           <p className="text-gray-500 text-center">
-            Trạng thái: {
-              currentMood === 'happy' ? 'Vui vẻ 😄' :
-              currentMood === 'sad' ? 'Buồn 😢' :
-              currentMood === 'angry' ? 'Giận 😠' :
-              currentMood === 'sleeping' ? 'Ngủ 😴' :
-              'Bình thường 🙂'
-            }
+            Trạng thái:{" "}
+            {currentMood === "happy"
+              ? "Vui vẻ 😄"
+              : currentMood === "sad"
+              ? "Buồn 😢"
+              : currentMood === "angry"
+              ? "Giận 😠"
+              : currentMood === "sleeping"
+              ? "Ngủ 😴"
+              : "Bình thường 🙂"}
           </p>
         </div>
 
@@ -226,10 +261,12 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
             onClick={() => setIsOpen(!isOpen)}
             className="w-full flex justify-between items-center p-2 border border-gray-300 rounded-md bg-white cursor-pointer select-none z-20 relative"
           >
-            <span className="font-semibold text-gray-700">Danh sách công việc</span>
+            <span className="font-semibold text-gray-700">
+              Danh sách công việc
+            </span>
             <svg
               className={`w-5 h-5 text-gray-600 transform transition-transform duration-300 ${
-                isOpen ? 'rotate-0' : 'rotate-180'
+                isOpen ? "rotate-0" : "rotate-180"
               }`}
               fill="none"
               stroke="currentColor"
@@ -237,19 +274,25 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 9l-7 7-7-7"
+              ></path>
             </svg>
           </button>
 
           <div
             className={`absolute bottom-full left-0 right-0 bg-white border-x border-b border-gray-300 rounded-b-md shadow-lg overflow-y-auto transition-[max-height] duration-300 ease-in-out z-30
-              ${isOpen ? 'max-h-[450px] mt-1' : 'max-h-0'}
+              ${isOpen ? "max-h-[450px] mt-1" : "max-h-0"}
             `}
-            style={{ transitionProperty: 'max-height' }}
+            style={{ transitionProperty: "max-height" }}
           >
             {/* Phần các trạng thái của thú cưng */}
             <div className="p-2 bg-blue-50 border-b border-gray-200">
-              <h3 className="font-semibold text-blue-700">Hoạt động hàng ngày</h3>
+              <h3 className="font-semibold text-blue-700">
+                Hoạt động hàng ngày
+              </h3>
             </div>
 
             {statuses.map((status, idx) => (
@@ -274,7 +317,9 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
             {todayTasks.length > 0 && (
               <>
                 <div className="p-2 bg-green-50 border-b border-gray-200">
-                  <h3 className="font-semibold text-green-700">Nhiệm vụ hôm nay</h3>
+                  <h3 className="font-semibold text-green-700">
+                    Nhiệm vụ hôm nay
+                  </h3>
                 </div>
                 {todayTasks.map((task) => (
                   <div
@@ -284,8 +329,15 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
                     <div>
                       <p className="text-gray-700">{task.text}</p>
                       <p className="text-xs text-gray-500">
-                        {new Date(task.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} -
-                        {new Date(task.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {new Date(task.start).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}{" "}
+                        -
+                        {new Date(task.end).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -306,7 +358,9 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
             {upcomingTasks.length > 0 && (
               <>
                 <div className="p-2 bg-yellow-50 border-b border-gray-200">
-                  <h3 className="font-semibold text-yellow-700">Nhiệm vụ ngày mai</h3>
+                  <h3 className="font-semibold text-yellow-700">
+                    Nhiệm vụ ngày mai
+                  </h3>
                 </div>
                 {upcomingTasks.map((task) => (
                   <div
@@ -316,8 +370,15 @@ const Pet = ({ name, message, mood = 'happy', tasks = [], onTaskStatusChange }) 
                     <div>
                       <p className="text-gray-700">{task.text}</p>
                       <p className="text-xs text-gray-500">
-                        {new Date(task.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} -
-                        {new Date(task.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {new Date(task.start).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}{" "}
+                        -
+                        {new Date(task.end).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">

@@ -32,7 +32,7 @@ function App() {
           end: "2025-04-14T11:00:00",
           priority: "LOW",
           description: "Học các khái niệm cơ bản về React",
-          status: "todo"
+          status: "todo",
         },
         {
           id: 2,
@@ -41,7 +41,7 @@ function App() {
           end: "2025-04-15T15:30:00",
           priority: "MEDIUM",
           description: "Thảo luận về tiến độ dự án",
-          status: "todo"
+          status: "todo",
         },
         {
           id: 3,
@@ -50,7 +50,7 @@ function App() {
           end: "2025-04-16T12:00:00",
           priority: "HIGH",
           description: "Nộp bản demo cho khách hàng",
-          status: "done"
+          status: "done",
         },
         {
           id: 4,
@@ -59,7 +59,7 @@ function App() {
           end: "2025-04-17T11:30:00",
           priority: "FIXED",
           description: "Lớp học lập trình nâng cao",
-          status: "todo"
+          status: "todo",
         },
       ];
       setEvents(sampleEvents);
@@ -165,7 +165,11 @@ function App() {
               </select>
             </div>
             <div className="w-1/4 flex justify-end">
-              <TaskNotificationCenter tasks={events} />
+              <TaskNotificationCenter
+                task={events}
+                petMood={petMood}
+                petName="Mèo béo"
+              />
             </div>
           </div>{" "}
           <Calendar
