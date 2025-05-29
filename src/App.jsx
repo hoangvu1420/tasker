@@ -1,146 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import { DayPilot } from "@daypilot/daypilot-lite-react";
 import Calendar from "./components/Calendar";
 import Pet from "./components/Pet";
 import TaskNotificationCenter from "./components/TaskNotification";
 import { ToastContainer } from "react-toastify";
+import { usePet } from "./hooks/usePet";
+import { useTasks } from "./hooks/useTasks";
 
 function App() {
   const [startDate, setStartDate] = useState(DayPilot.Date.today());
-  const [events, setEvents] = useState([]);
-  const [viewType, setViewType] = useState("Week"); // Add state for calendar view type
+  const [viewType, setViewType] = useState("Week");
 
-  // Pet state
-  const [petMood, setPetMood] = useState("happy");
-  const [petMessage, setPetMessage] = useState("Hôm nay Meo rất vui!");
-
-  // Load events from local storage on initial render
-  useEffect(() => {
-    const savedEvents = localStorage.getItem("tasks");
-    if (savedEvents) {
-      setEvents(JSON.parse(savedEvents));
-      setPetMood("normal");
-      setPetMessage("Meo đã tải lịch trình của bạn!");
-    } else {
-      // Initialize sample events for first time users
-      const sampleEvents = [
-        {
-          id: 1,
-          text: "Học React",
-          start: "2025-04-14T09:00:00",
-          end: "2025-04-14T11:00:00",
-          priority: "LOW",
-          description: "Học các khái niệm cơ bản về React",
-          status: "todo",
-        },
-        {
-          id: 2,
-          text: "Họp nhóm",
-          start: "2025-04-15T14:00:00",
-          end: "2025-04-15T15:30:00",
-          priority: "MEDIUM",
-          description: "Thảo luận về tiến độ dự án",
-          status: "todo",
-        },
-        {
-          id: 3,
-          text: "Deadline dự án",
-          start: "2025-04-16T10:00:00",
-          end: "2025-04-16T12:00:00",
-          priority: "HIGH",
-          description: "Nộp bản demo cho khách hàng",
-          status: "done",
-        },
-        {
-          id: 4,
-          text: "Lịch học hàng tuần",
-          start: "2025-04-17T08:30:00",
-          end: "2025-04-17T11:30:00",
-          priority: "FIXED",
-          description: "Lớp học lập trình nâng cao",
-          status: "todo",
-        },
-      ];
-      setEvents(sampleEvents);
-      localStorage.setItem("tasks", JSON.stringify(sampleEvents));
-    }
-  }, []);
-
-  // Update local storage whenever events change
-  useEffect(() => {
-    if (events.length > 0) {
-      localStorage.setItem("tasks", JSON.stringify(events));
-    }
-  }, [events]);
-
-  // Add a new task
-  const handleAddTask = (newEvent) => {
-    // Update events state
-    setEvents((prevEvents) => [...prevEvents, newEvent]);
-    // Update pet mood
-    setPetMood("happy");
-    setPetMessage("Bạn đã lập kế hoạch mới, tuyệt vời lắm!");
-  };
-
-  // Update existing task
-  const handleUpdateTask = (updatedEvent) => {
-    // Update events state
-    setEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.id === updatedEvent.id ? updatedEvent : event
-      )
-    );
-    // Update pet mood
-    setPetMood("happy");
-    setPetMessage("Bạn đang cập nhật kế hoạch, tốt lắm!");
-  };
-
-  // Delete task
-  const handleDeleteTask = (id) => {
-    // Update events state
-    setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
-    // Update pet mood
-    setPetMood("sad");
-    setPetMessage("Bạn đã xóa một nhiệm vụ, Meo hơi buồn...");
-  };
-
-  // Handle task status change
-  const handleTaskStatusChange = (taskId, isCompleted) => {
-    setEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.id === taskId
-          ? { ...event, status: isCompleted ? "done" : "todo" }
-          : event
-      )
-    );
-
-    // Update pet mood based on task completion
-    if (isCompleted) {
-      setPetMood("happy");
-      setPetMessage("Thật tuyệt vời! Bạn đã hoàn thành một nhiệm vụ!");
-    } else {
-      setPetMood("normal");
-      setPetMessage("Bạn đã hủy hoàn thành nhiệm vụ. Cố gắng lên nhé!");
-    }
-  };
+  const { petMood, petMessage, updatePetState } = usePet();
+  const { events, addTask, updateTask, deleteTask, changeStatus } = useTasks(updatePetState);
 
   return (
     <>
       <div className="flex min-h-screen p-8 gap-8 bg-gray-100">
-        {/* Bên trái: Thú cưng */}
         <Pet
           name="Mèo béo"
           message={petMessage}
           mood={petMood}
           tasks={events}
-          onTaskStatusChange={handleTaskStatusChange}
+          onTaskStatusChange={changeStatus}
         />
 
-        {/* Bên phải: DatePicker + Calendar */}
         <div className="flex-1">
           <div className="flex flex-row items-center justify-between mb-4">
-            {" "}
             <div className="w-1/4">
               <input
                 type="date"
@@ -171,15 +58,15 @@ function App() {
                 petName="Mèo béo"
               />
             </div>
-          </div>{" "}
+          </div>
           <Calendar
             events={events}
             startDate={startDate}
             setStartDate={setStartDate}
             viewType={viewType}
-            onAddTask={handleAddTask}
-            onUpdateTask={handleUpdateTask}
-            onDeleteTask={handleDeleteTask}
+            onAddTask={addTask}
+            onUpdateTask={updateTask}
+            onDeleteTask={deleteTask}
           />
         </div>
       </div>
