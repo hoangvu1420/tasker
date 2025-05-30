@@ -14,6 +14,7 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
       end: null,
       priority: "MEDIUM",
       description: "",
+      status: "todo",
     }),
     []
   );

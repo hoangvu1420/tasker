@@ -97,7 +97,8 @@ const Calendar = ({
       start: timeRange.start,
       end: timeRange.end,
       priority: 'MEDIUM',
-      description: ''
+      description: '',
+      status: "todo"
     };
 
     setSelectedTask(newEmptyTask);

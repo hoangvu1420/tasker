@@ -13,6 +13,7 @@
     "@daypilot/daypilot-lite-react": "^3.33.1",
     "date-fns": "^4.1.0",
     "install": "^0.13.0",
+    "lucide-react": "^0.511.0",
     "npm": "^11.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
