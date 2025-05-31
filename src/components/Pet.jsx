@@ -11,6 +11,8 @@ const Pet = ({
   const [isOpen, setIsOpen] = useState(false); // This state will now control the task list within the pet view itself, if needed
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
+  const [previousLevel, setPreviousLevel] = useState(1);
+  const [showLevelUpBanner, setShowLevelUpBanner] = useState(false);
 
   const statuses = [
     "Đang ăn",
@@ -62,9 +64,16 @@ const Pet = ({
   }, [currentMood]);
 
   useEffect(() => {
-    const newLevel = Math.floor(score / 50) + 1;
-    setLevel(newLevel);
+    const newLevel = Math.floor(score / 20) + 1;
+    if (newLevel > previousLevel) {
+      setLevel(newLevel);
+      setPreviousLevel(newLevel);
+      setShowLevelUpBanner(true);
+    } else {
+      setLevel(newLevel);
+    }
   }, [score]);
+
 
 
   const moodsByIndex = ["happy", "sad", "angry", "sleeping", "normal"];
@@ -265,15 +274,16 @@ const todayAchievements = getAchievements(todayTasks);
         <div className="w-full mb-2 flex items-center gap-2 justify-end">
           {/* Progress bar bên trái */}
           <div className="relative w-full h-4 bg-gray-200 rounded-full overflow-hidden mr-2">
-            <div
-              className="h-full bg-green-500"
-              style={{ width: `${(score % 50) * 2}%` }} // Vì 50 điểm = 100%, nên nhân 2
+          <div
+              className="h-full bg-green-500 transition-all duration-300"
+              style={{ width: `${((score % 20) / 20) * 100}%` }}
             ></div>
             <div className="flex-1"></div>
             <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-semibold select-none">
-              {score}%
+              {((score % 20) / 20 * 100).toFixed(0)}%
             </span>
           </div>
+
 
           <div className="flex-1"></div>
 
@@ -285,8 +295,25 @@ const todayAchievements = getAchievements(todayTasks);
           </div>
         </div>
 
-
-        <div className="flex flex-col items-center py-16 border-t border-b border-gray-300 w-full max-w-[500px] mx-auto bg-ghostwhite">
+        <div className="flex flex-col items-center py-16 border-t border-b border-gray-300 w-full max-w-[500px] mx-auto bg-ghostwhite relative">
+          {showLevelUpBanner && (
+            <div className="absolute inset-0 bg-yellow-100 flex flex-col items-center justify-center z-50 rounded-lg p-4">
+              <h3 className="text-lg font-bold text-yellow-800 mb-2">
+                🎉 Chúc mừng bạn đã lên cấp! 
+              </h3>
+              <img
+                src="/celebration.gif"
+                alt="Chúc mừng"
+                className="w-32 h-32 mb-2"
+              />
+              <button
+                className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-4 rounded"
+                onClick={() => setShowLevelUpBanner(false)}
+              >
+                Tiếp tục
+              </button>
+            </div>
+          )}
           <div className="border w-[300px] text-xs">
             <div className="text-center border-b p-1.5">Thành tựu (ngày) :</div>
             <div className="flex w-full">
