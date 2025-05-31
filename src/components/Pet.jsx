@@ -10,6 +10,8 @@ const Pet = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false); // This state will now control the task list within the pet view itself, if needed
   const [score, setScore] = useState(0);
+  const [level, setLevel] = useState(1);
+
   const statuses = [
     "Đang ăn",
     "Đang ngủ",
@@ -58,6 +60,12 @@ const Pet = ({
       return () => clearTimeout(timer);
     }
   }, [currentMood]);
+
+  useEffect(() => {
+    const newLevel = Math.floor(score / 50) + 1;
+    setLevel(newLevel);
+  }, [score]);
+
 
   const moodsByIndex = ["happy", "sad", "angry", "sleeping", "normal"];
 
@@ -179,6 +187,29 @@ const Pet = ({
     return taskDate === formattedToday;
   });
 
+  const getAchievements = (tasks) => {
+  const categories = {
+    HIGH: { done: 0, total: 0 },
+    MEDIUM: { done: 0, total: 0 },
+    LOW: { done: 0, total: 0 },
+  };
+
+  tasks.forEach((task) => {
+    const priority = task.priority;
+    if (categories[priority]) {
+      categories[priority].total += 1;
+      if (task.status === "done") {
+        categories[priority].done += 1;
+      }
+    }
+  });
+
+  return categories;
+};
+
+const todayAchievements = getAchievements(todayTasks);
+
+
   const upcomingTasks = tasks.filter((task) => {
     if (!task.start) return false;
     const taskDate = getDateFromTimeString(task.start);
@@ -236,7 +267,7 @@ const Pet = ({
           <div className="relative w-full h-4 bg-gray-200 rounded-full overflow-hidden mr-2">
             <div
               className="h-full bg-green-500"
-              style={{ width: `${score}%` }}
+              style={{ width: `${(score % 50) * 2}%` }} // Vì 50 điểm = 100%, nên nhân 2
             ></div>
             <div className="flex-1"></div>
             <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-semibold select-none">
@@ -250,27 +281,29 @@ const Pet = ({
           <div className="flex items-center gap-2">
             <img src="/level_ic.png" alt="coin icon" className="w-5 h-5" />
             <span className="font-semibold text-gray-700">Level: </span>
-            <span className="font-semibold text-gray-700 mr-4">{score}</span>
+            <span className="font-semibold text-gray-700 mr-4">{level}</span>
           </div>
         </div>
 
 
         <div className="flex flex-col items-center py-16 border-t border-b border-gray-300 w-full max-w-[500px] mx-auto bg-ghostwhite">
           <div className="border w-[300px] text-xs">
-            <div className="text-center border-b p-1.5">Thành tựu :</div>
+            <div className="text-center border-b p-1.5">Thành tựu (ngày) :</div>
             <div className="flex w-full">
-              <div className="w-1/3 p-2 flex flex-col text-center">
-                <div className="flex-1 p-1">Task/Ngày</div>
-                <div className="flex-1">3/8</div>
-              </div>
-              <div className="w-1/3 p-2 flex flex-col text-center">
-                <div className="flex-1 p-1">Task/Tuần</div>
-                <div className="flex-1">3/8</div>
-              </div>
-              <div className="w-1/3 p-2 flex flex-col text-center">
-                <div className="flex-1 p-1">Task/Tháng</div>
-                <div className="flex-1">3/8</div>
-              </div>
+              {["HIGH", "MEDIUM", "LOW"].map((level) => (
+                <div key={level} className="w-1/3 p-2 flex flex-col text-center">
+                  <div className="flex-1 p-1">
+                    {level === "HIGH"
+                      ? "Cao"
+                      : level === "MEDIUM"
+                      ? "Trung bình"
+                      : "Thấp"}
+                  </div>
+                  <div className="flex-1">
+                    {todayAchievements[level].done}/{todayAchievements[level].total}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           <img
