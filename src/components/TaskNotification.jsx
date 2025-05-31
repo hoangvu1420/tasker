@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import {
   format,
-  isSameDay,
   parseISO,
   isAfter,
   isBefore,
@@ -61,13 +60,13 @@ const TaskNotificationCenter = ({ tasks = [], petMood, petName }) => {
             read: false,
           });
 
-          toast(`🔔 Đến giờ: ${task.text}`, {
+          toast(`⏰ Đến giờ bắt đầu: ${task.text}`, {
             type:
               task.priority === "HIGH"
                 ? "info"
                 : task.priority === "MEDIUM"
-                ? "default"
-                : "success",
+                  ? "default"
+                  : "success",
           });
         }
 
@@ -87,15 +86,22 @@ const TaskNotificationCenter = ({ tasks = [], petMood, petName }) => {
             read: false,
           });
 
-          toast(`[${task.priority}] Sắp hết hạn: ${task.text}`, {
+          const priorityEmoji = {
+            HIGH: "🔥",
+            MEDIUM: "⚠️",
+            LOW: "💡",
+            FIXED: "📅"
+          }[task.priority] || "⏰";
+
+          toast(`${priorityEmoji} Sắp hết hạn: ${task.text}`, {
             type:
               task.priority === "HIGH"
                 ? "error"
                 : task.priority === "MEDIUM"
-                ? "warning"
-                : task.priority === "FIXED"
-                ? "info"
-                : "default",
+                  ? "warning"
+                  : task.priority === "FIXED"
+                    ? "info"
+                    : "default",
           });
         }
       });
@@ -213,10 +219,10 @@ const TaskNotificationCenter = ({ tasks = [], petMood, petName }) => {
                 {type === "all"
                   ? "Tất cả"
                   : type === "start"
-                  ? "Bắt đầu"
-                  : type === "end"
-                  ? "Kết thúc"
-                  : "Pet"}
+                    ? "Bắt đầu"
+                    : type === "end"
+                      ? "Kết thúc"
+                      : "Pet"}
               </button>
             ))}
           </div>
@@ -238,8 +244,8 @@ const TaskNotificationCenter = ({ tasks = [], petMood, petName }) => {
                     {notif.type === "start"
                       ? "sắp bắt đầu"
                       : notif.type === "end"
-                      ? "sắp hết hạn"
-                      : "Pet"}
+                        ? "sắp hết hạn"
+                        : "Pet"}
                   </div>
                   <div className="text-xs text-gray-500">
                     {format(parseISO(notif.start), "HH:mm")} -{" "}
@@ -250,10 +256,10 @@ const TaskNotificationCenter = ({ tasks = [], petMood, petName }) => {
                       notif.priority === "HIGH"
                         ? "text-red-500"
                         : notif.priority === "MEDIUM"
-                        ? "text-yellow-500"
-                        : notif.priority === "LOW"
-                        ? "text-green-500"
-                        : "text-blue-500"
+                          ? "text-yellow-500"
+                          : notif.priority === "LOW"
+                            ? "text-green-500"
+                            : "text-blue-500"
                     }`}
                   >
                     Ưu tiên: {notif.priority}
@@ -264,8 +270,6 @@ const TaskNotificationCenter = ({ tasks = [], petMood, petName }) => {
           </div>
         </div>
       )}
-
-      <ToastContainer position="bottom-left" />
     </div>
   );
 };

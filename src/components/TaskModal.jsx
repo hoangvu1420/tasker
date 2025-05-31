@@ -50,19 +50,19 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
   // Validate form data
   const validateForm = () => {
     if (!formData.text.trim()) {
-      toast.error("Tên nhiệm vụ không được để trống");
+      toast.error("❌ Vui lòng nhập tên nhiệm vụ");
       return false;
     }
     if (formData.start && isNaN(new Date(formData.start).getTime())) {
-      toast.error("Thời gian bắt đầu không hợp lệ");
+      toast.error("❌ Thời gian bắt đầu không hợp lệ");
       return false;
     }
     if (formData.end && isNaN(new Date(formData.end).getTime())) {
-      toast.error("Thời gian kết thúc không hợp lệ");
+      toast.error("❌ Thời gian kết thúc không hợp lệ");
       return false;
     }
     if (new Date(formData.end) <= new Date(formData.start)) {
-      toast.error("Thời gian kết thúc phải sau thời gian bắt đầu");
+      toast.error("❌ Thời gian kết thúc phải sau thời gian bắt đầu");
       return false;
     }
     return true;
@@ -74,16 +74,20 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
     if (!validateForm()) return;
 
     if (JSON.stringify(formData) === JSON.stringify(task)) {
-      toast.info("Không có thay đổi để lưu");
+      toast.info("ℹ️ Không có thay đổi nào để lưu");
       return;
     }
 
     try {
       onSave(formData);
-      toast.success("OK");
+      if (task && task.id) {
+        toast.success("✅ Cập nhật nhiệm vụ thành công!");
+      } else {
+        toast.success("🎉 Tạo nhiệm vụ mới thành công!");
+      }
       onClose();
     } catch (error) {
-      toast.error("Sửa không thành công");
+      toast.error("❌ Không thể lưu nhiệm vụ. Vui lòng thử lại!");
       console.error(error);
     }
   };
@@ -220,10 +224,10 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
                           {key === "HIGH"
                             ? "Cao"
                             : key === "MEDIUM"
-                            ? "Trung bình"
-                            : key === "LOW"
-                            ? "Thấp"
-                            : "Cố định"}
+                              ? "Trung bình"
+                              : key === "LOW"
+                                ? "Thấp"
+                                : "Cố định"}
                         </span>
                       </label>
                     )
