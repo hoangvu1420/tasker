@@ -124,7 +124,7 @@ const Pet = ({
         return "/pet_sleeping.gif";
       case "normal":
       default:
-        return "/pet_normal.png";
+        return "/pet_normal.gif";
     }
   };
 
@@ -231,19 +231,48 @@ const Pet = ({
 
         <div className="flex-grow"></div>
 
-        <div className="w-full text-right mb-2 flex justify-end items-center gap-2">
-          <img src="/coin_ic.png" alt="coin icon" className="w-5 h-5" />
-          <span className="font-semibold text-gray-700">Điểm: {score}</span>
-        </div>
-
-        <div className="flex flex-col items-center py-16 border-t border-b border-gray-300 w-full max-w-[500px] mx-auto bg-ghostwhite">
-          <div className="relative mb-4 w-full max-w-[250px]">
-            <div className="bg-white p-3 rounded-lg shadow-md relative">
-              <p className="text-gray-700 text-center break-words">{message}</p>
-              <div className="absolute h-4 w-4 bg-white rotate-45 -bottom-2 left-1/2 -translate-x-1/2"></div>
-            </div>
+        <div className="w-full mb-2 flex items-center gap-2 justify-end">
+          {/* Progress bar bên trái */}
+          <div className="relative w-full h-4 bg-gray-200 rounded-full overflow-hidden mr-2">
+            <div
+              className="h-full bg-green-500"
+              style={{ width: `${score}%` }}
+            ></div>
+            <div className="flex-1"></div>
+            <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-semibold select-none">
+              {score}%
+            </span>
           </div>
 
+          <div className="flex-1"></div>
+
+          {/* Icon + text */}
+          <div className="flex items-center gap-2">
+            <img src="/level_ic.png" alt="coin icon" className="w-5 h-5" />
+            <span className="font-semibold text-gray-700">Level: </span>
+            <span className="font-semibold text-gray-700 mr-4">{score}</span>
+          </div>
+        </div>
+
+
+        <div className="flex flex-col items-center py-16 border-t border-b border-gray-300 w-full max-w-[500px] mx-auto bg-ghostwhite">
+          <div className="border w-[300px] text-xs">
+            <div className="text-center border-b p-1.5">Thành tựu :</div>
+            <div className="flex w-full">
+              <div className="w-1/3 p-2 flex flex-col text-center">
+                <div className="flex-1 p-1">Task/Ngày</div>
+                <div className="flex-1">3/8</div>
+              </div>
+              <div className="w-1/3 p-2 flex flex-col text-center">
+                <div className="flex-1 p-1">Task/Tuần</div>
+                <div className="flex-1">3/8</div>
+              </div>
+              <div className="w-1/3 p-2 flex flex-col text-center">
+                <div className="flex-1 p-1">Task/Tháng</div>
+                <div className="flex-1">3/8</div>
+              </div>
+            </div>
+          </div>
           <img
             src={getPetImage()}
             alt={`${name} is ${currentMood}`}
@@ -260,7 +289,7 @@ const Pet = ({
               ? "Giận 😠"
               : currentMood === "sleeping"
               ? "Ngủ 😴"
-              : "Bình thường 🙂"}
+              : "Buồn ngủ 😴"}
           </p>
         </div>
 
