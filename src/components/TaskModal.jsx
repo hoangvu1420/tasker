@@ -103,17 +103,24 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
     onClose();
   };
 
-  // Format date and time for display
-  const formatDateTime = (dateTimeString) => {
-    if (!dateTimeString) return "";
-    const date = new Date(dateTimeString);
-    return date.toLocaleString("vi-VN", {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  // Format date and time for input field - handles both string and Date objects
+  const formatDateTimeForInput = (dateValue) => {
+    if (!dateValue) return "";
+
+    let dateString;
+    if (typeof dateValue === 'string') {
+      dateString = dateValue;
+    } else if (dateValue instanceof Date) {
+      dateString = dateValue.toISOString();
+    } else if (dateValue.toString && typeof dateValue.toString === 'function') {
+      // Handle DayPilot.Date objects
+      dateString = dateValue.toString();
+    } else {
+      return "";
+    }
+
+    // Return first 16 characters (YYYY-MM-DDTHH:mm format)
+    return dateString.slice(0, 16);
   };
 
   if (!isOpen) return null;
@@ -167,7 +174,7 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
                     type="datetime-local"
                     id="start"
                     name="start"
-                    value={formData.start ? formData.start.slice(0, 16) : ""}
+                    value={formatDateTimeForInput(formData.start)}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100"
                     // disabled
@@ -184,7 +191,7 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
                     type="datetime-local"
                     id="end"
                     name="end"
-                    value={formData.end ? formData.end.slice(0, 16) : ""}
+                    value={formatDateTimeForInput(formData.end)}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100"
                     // disabled
