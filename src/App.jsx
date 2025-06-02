@@ -5,6 +5,7 @@ import Calendar from "./components/Calendar";
 import Pet from "./components/Pet";
 import TaskNotificationCenter from "./components/TaskNotification";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { usePet } from "./hooks/usePet";
 import { useTasks } from "./hooks/useTasks";
 
