@@ -83,13 +83,13 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
       if (task && task.id) {
         toast.success("✅ Cập nhật nhiệm vụ thành công!");
         const sound = new Audio("/../../public/notif-sounds.mp3");
-      sound.volume = 0.5;
-      sound.play().catch(() => {});
+        sound.volume = 0.5;
+        sound.play().catch(() => {});
       } else {
         toast.success("🎉 Tạo nhiệm vụ mới thành công!");
         const sound = new Audio("/../../public/notif-sounds.mp3");
-      sound.volume = 0.5;
-      sound.play().catch(() => {});
+        sound.volume = 0.5;
+        sound.play().catch(() => {});
       }
       onClose();
     } catch (error) {

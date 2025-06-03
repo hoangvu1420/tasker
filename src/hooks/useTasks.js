@@ -43,8 +43,8 @@ export function useTasks(updatePetState) {
       {
         id: DayPilot.guid(),
         text: "Giải tích",
-        start: mondayOfWeek.addDays(1).addHours(14).toString(),
-        end: mondayOfWeek.addDays(1).addHours(16).toString(),
+        start: mondayOfWeek.addDays(1).addHours(16).toString(),
+        end: mondayOfWeek.addDays(1).addHours(18).toString(),
         backColor: "#cc4125", // HIGH priority
         priority: "HIGH",
         status: "todo",
