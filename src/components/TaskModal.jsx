@@ -232,9 +232,7 @@ const TaskModal = ({ isOpen, onClose, task, onSave, onDelete }) => {
                             ? "Cao"
                             : key === "MEDIUM"
                               ? "Trung bình"
-                              : key === "LOW"
-                                ? "Thấp"
-                                : "Cố định"}
+                              : "Thấp"}
                         </span>
                       </label>
                     )

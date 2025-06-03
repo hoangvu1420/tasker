@@ -11,9 +11,5 @@ export const PRIORITY_COLORS = {
   LOW: {
     background: "#6aa84f", // Green for low priority
     text: "#ffffff" // White text for contrast
-  },
-  FIXED: {
-    background: "#3d85c6", // Blue for fixed events
-    text: "#ffffff" // White text for contrast
   }
 };

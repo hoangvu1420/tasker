@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { DayPilot } from "@daypilot/daypilot-lite-react";
 
 export function useTasks(updatePetState) {
   const [events, setEvents] = useState([]);
@@ -20,9 +21,52 @@ export function useTasks(updatePetState) {
   }, [events]);
 
   const initializeSampleEvents = () => {
-    const sampleEvents = [ /* ... */ ];
+    // Get current date and find the Monday of current week
+    const today = DayPilot.Date.today();
+    const dayOfWeek = today.getDayOfWeek();
+    const mondayOfWeek = today.addDays(1 - dayOfWeek); // 1 is Monday in DayPilot
+
+    const sampleEvents = [
+      // Monday task
+      {
+        id: DayPilot.guid(),
+        text: "Học React",
+        start: mondayOfWeek.addHours(9).toString(),
+        end: mondayOfWeek.addHours(11).toString(),
+        backColor: "#cc4125", // HIGH priority
+        priority: "HIGH",
+        status: "todo",
+        description: "Học về React hooks và state management"
+      },
+
+      // Tuesday task
+      {
+        id: DayPilot.guid(),
+        text: "Giải tích",
+        start: mondayOfWeek.addDays(1).addHours(14).toString(),
+        end: mondayOfWeek.addDays(1).addHours(16).toString(),
+        backColor: "#cc4125", // HIGH priority
+        priority: "HIGH",
+        status: "todo",
+        description: "Ôn tập giải tích cho kỳ thi giữa kỳ"
+      },
+
+      // Friday task
+      {
+        id: DayPilot.guid(),
+        text: "Đi cafe với bạn",
+        start: mondayOfWeek.addDays(4).addHours(15).toString(),
+        end: mondayOfWeek.addDays(4).addHours(17).toString(),
+        backColor: "#6aa84f", // LOW priority
+        priority: "LOW",
+        status: "todo",
+        description: "Gặp mặt và trò chuyện với bạn bè"
+      }
+    ];
+
     setEvents(sampleEvents);
     localStorage.setItem("tasks", JSON.stringify(sampleEvents));
+    updatePetState("happy", "Meo đã tải lịch trình của bạn!");
   };
 
   const addTask = (newEvent) => {

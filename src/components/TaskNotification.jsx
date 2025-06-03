@@ -89,8 +89,7 @@ const TaskNotificationCenter = ({ tasks = [], petMood, petName }) => {
           const priorityEmoji = {
             HIGH: "🔥",
             MEDIUM: "⚠️",
-            LOW: "💡",
-            FIXED: "📅"
+            LOW: "💡"
           }[task.priority] || "⏰";
 
           toast(`${priorityEmoji} Sắp hết hạn: ${task.text}`, {
@@ -99,9 +98,7 @@ const TaskNotificationCenter = ({ tasks = [], petMood, petName }) => {
                 ? "error"
                 : task.priority === "MEDIUM"
                   ? "warning"
-                  : task.priority === "FIXED"
-                    ? "info"
-                    : "default",
+                  : "default",
           });
         }
       });
@@ -257,9 +254,7 @@ const TaskNotificationCenter = ({ tasks = [], petMood, petName }) => {
                         ? "text-red-500"
                         : notif.priority === "MEDIUM"
                           ? "text-yellow-500"
-                          : notif.priority === "LOW"
-                            ? "text-green-500"
-                            : "text-blue-500"
+                          : "text-green-500"
                     }`}
                   >
                     Ưu tiên: {notif.priority}
